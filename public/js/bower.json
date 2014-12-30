@@ -1,0 +1,16 @@
+{
+  "name": "jquery",
+  "version": "0.0.0",
+  "authors": [
+    "wen <stevenxzw@163.com>"
+  ],
+  "license": "MIT",
+  "private": true,
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ]
+}

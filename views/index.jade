@@ -1,0 +1,58 @@
+extends layout
+
+block content
+
+    div.container-fluid(ng-controller="MainCtrl")
+        div.row
+            div.col-sm-3.col-md-5.sidebar
+                div.sidebar-head
+                    h5.sub-header fiddler
+                    button.btn.btn-primary.active(type='button' ng-click="add_modal_btn($event)")| addRule
+                div.table-responsive
+                    table.table.table-striped
+                        tbody
+                            tr(ng-repeat="rule in rules")
+                                td
+                                    span <% $index+1%>
+                                    input(type='checkbox' checked="<% rule.isReplace%>" style="margin-left:5px;")
+                                td(width="60%") <% rule.orgUrl|limitTo:30%>
+                                td <% rule.targetUrl|limitTo:30%>
+            div.col-sm-9.col-sm-offset-3.col-md-7.col-md-offset-5.main
+                h5.sub-header 请求列表
+                div.table-responsive
+                    table.table.table-striped
+                        tbody
+                            tr(ng-repeat="item in uris")
+                                td <% $index+1%>
+                                td(width="60%") <% item.uri|limitTo:40%>
+                                td ipsum
+
+        .modal.fade(id="addModal" style="display:none;")
+            .modal-dialog
+                .modal-content
+                    .modal-header
+                        button.close(type='button', data-dismiss='modal')
+                            span(aria-hidden='true' id="closebtn2") ×
+                            span.sr-only Close
+                        h4.modal-title Add
+                    .modal-body
+                        form.form-horizontal(role='form')
+                            .form-group
+                                label.col-sm-2.control-label(for='TargetUrl') Target
+                                .col-sm-10
+                                    input#TargetUrl.form-control(type='text', placeholder='TargetUrl' ,ng-model='modalData.targetUrl')
+                            .form-group
+                                label.col-sm-2.control-label(for='ReplaceUrl') Replace
+                                .col-sm-10
+                                    input#ReplaceUrl.form-control(type='text',ng-model='modalData.replaceUrl', placeholder='Url')
+                            .form-group
+                                label.col-sm-2.control-label(for='compare') CompareType
+                                .col-sm-10
+                                    select.form-control(id="CompareType" name="compareType" ng-model='modalData.compareType')
+                                        option compare
+                                        option regExp
+                    .modal-footer
+                        button.btn.btn-default(type='button', data-dismiss='modal' id="closebtn") Close
+                        button.btn.btn-primary(type='button' id="modal_save") Save
+
+

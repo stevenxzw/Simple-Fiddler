@@ -6,17 +6,19 @@ block content
         div.row
             div.col-sm-3.col-md-5.sidebar
                 div.sidebar-head
-                    h5.sub-header fiddler==
+                    h5.sub-header fiddler
                     button.btn.btn-primary.active(type='button' ng-click="add_modal_btn($event)")| addRule
                 div(ngd-click="itemClick($event)"  selector="input,span").table-responsive
-                    table.table.table-striped
+                    table(id="table_list").table.table-striped
                         tbody
-                            tr(ng-repeat="rule in rules")
+                            tr(ng-repeat="rule in rules" rel="<% rule.id%>")
                                 td
                                     span <% $index+1%>
-                                    input(type='checkbox' checked="<% rule.targetUrl%>" style="margin-left:5px;")
+                                    input(type='checkbox' ng-checked="rule.isChecked=== true" style='margin-left:5px;')
                                 td(width="60%") <% rule.targetUrl|limitTo:30%>
                                 td <% rule.replaceWith|limitTo:30%>
+                                td
+                                    span.del x
             div.col-sm-9.col-sm-offset-3.col-md-7.col-md-offset-5.main
                 h5.sub-header 请求列表
                 div.table-responsive
@@ -24,8 +26,13 @@ block content
                         tbody
                             tr(ng-repeat="item in uris")
                                 td <% $index+1%>
-                                td(width="60%") <% item.uri|limitTo:40%>
-                                td ipsum
+                                td
+                                    img(src="<% item.contentType | icon%>")
+                                td
+                                    div(title="<% item.uri%>")<% item.uri|limitTo:40%>
+                                td
+                                    button 添加
+
 
         .modal.fade(id="addModal" style="display:none;")
             .modal-dialog

@@ -52,7 +52,8 @@
             dgEventDirectives[dirName] = ['$parse', function($parse) {
 
                 return function(scope, ele, attrs) {
-                    ele = $(ele);
+                    //ele = $(ele);
+                    ele = angular.element(ele);
                     var selector = attrs.selector;
                     var eventName = (name == 'Event' ? (attrs.eventName || 'click') : name.toLowerCase());
                     var events = attrs[dirName];

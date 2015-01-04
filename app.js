@@ -82,8 +82,22 @@ liveapp.use('/users', users);
     });
 
     console.log('run init')
+
+
+//自动刷新
+livereload = require('node-livereload');
+livereload.createServer();
+event = livereload.watch({
+    exts: ['jade','css','js'],
+    path : __dirname+'/public/'
+});
+event.on('change', function(file){
+    console.log('========');
+});
+//livereload -p ./ -e js,jade,css
 */
 require('./lib/uiInit.js');
 
-
+console.log(__dirname);
 require('./lib/remoteInit.js');
+

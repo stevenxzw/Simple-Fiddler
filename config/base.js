@@ -7,7 +7,7 @@ var config = {
     *  项目基本信息
     *
     * */
-    project : 'MyProxy',
+    project : 'simple-proxy',
     version : 1.0,
 
 

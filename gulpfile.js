@@ -12,10 +12,12 @@ var         sass = require('gulp-sass');
 var apps = require('./package.json');
 
 gulp.task('wsass', function(){
+    console.log('wsass:'+(+new Date));
     gulp.watch(['./public/sass/*'], ['sass']);
 })
 
 gulp.task('sass', function () {
+    console.log('sass:'+(+new Date));
   gulp.src('./public/sass/*.scss')
         .pipe(sass())
         .pipe(gulp.dest('./public/css'))

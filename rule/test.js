@@ -1,15 +1,30 @@
-/**
- * Created by wen on 14/12/24.
- *
- */
-exports.rule = [{
-        orgUrl : 'gaofen.js',
-        targetUrl : 'http://dev.myweb.com/gaofen.js',
-        compareType : 'regExp',//正则匹配
-        isReplace : true
-    },{
-    orgUrl : 'http://www.baidu.com/',
-    targetUrl : 'http://dev.myweb.com/remote.js',
-    compareType : 'compare',//全匹配
-    isReplace : true
-}];
+exports.rule=[
+    {
+        "id": 1,
+        "targetUrl": "gaofen.js",
+        "replaceWith": "http://dev.myweb.com/gaofen.js",
+        "compareType": "regExp",
+        "isChecked": true
+    },
+    {
+        "id": 2,
+        "targetUrl": "http://www.baidu.com/",
+        "replaceWith": "http://dev.myweb.com/remote.js",
+        "compareType": "compare",
+        "isChecked": true
+    },
+    {
+        "id": 4,
+        "replaceWith": "2",
+        "targetUrl": "1",
+        "compareType": "compare",
+        "isChecked": true
+    },
+    {
+        "id": 5,
+        "replaceWith": "22",
+        "targetUrl": "11",
+        "compareType": "compare",
+        "isChecked": true
+    }
+]

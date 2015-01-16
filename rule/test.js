@@ -26,5 +26,12 @@ exports.rule=[
         "targetUrl": "11",
         "compareType": "compare",
         "isChecked": true
+    },
+    {
+        "id": 6,
+        "replaceWith": "445",
+        "targetUrl": "44",
+        "compareType": "compare",
+        "isChecked": true
     }
 ]

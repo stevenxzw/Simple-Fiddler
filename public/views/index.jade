@@ -8,23 +8,24 @@ block content
                 div.sidebar-head
                     h5.sub-header fiddler
                     button.btn.btn-primary.active(type='button' ng-click="add_modal_btn($event)")| addRule
-                div(ngd-click="itemClick($event)"  selector="input,span").table-responsive
+                div(ngd-click="itemClick($event)"  selector="input,a").table-responsive
                     table(id="table_list").table.table-striped
                         tbody
                             tr(ng-repeat="rule in rules" rel="<% rule.id%>")
                                 td
                                     span <% $index+1%>
                                     input(type='checkbox' ng-checked="rule.isChecked=== true" style='margin-left:5px;')
-                                td(width="60%") <% rule.targetUrl|limitTo:30%>
+                                td <% rule.targetUrl|limitTo:30%>
                                 td <% rule.replaceWith|limitTo:30%>
                                 td
-                                    span.del x
+                                    a(href="").edit 修改
+                                    a(href="").del 删除
             div.col-sm-9.col-sm-offset-3.col-md-7.col-md-offset-5.main
                 h5.sub-header 请求列表
-                div.table-responsive
+                div(ngd-click="addRuleBtn($event,this)"  selector="button,div").table-responsive
                     table.table.table-striped
                         tbody
-                            tr(ng-repeat="item in uris")
+                            tr(ng-repeat="item in uris", rel="<% item.sid%>")
                                 td <% $index+1%>
                                 td
                                     img(src="<% item.contentType | icon%>")
@@ -32,7 +33,6 @@ block content
                                     div(title="<% item.uri%>")<% item.uri|limitTo:40%>
                                 td
                                     button 添加
-
 
         .modal.fade(id="addModal" style="display:none;")
             .modal-dialog
@@ -44,6 +44,7 @@ block content
                         h4.modal-title Add
                     .modal-body
                         form.form-horizontal(role='form')
+                            input.hidden(type="text",ng-model='modalData.id')
                             .form-group
                                 label.col-sm-2.control-label(for='TargetUrl') Target
                                 .col-sm-10
@@ -61,5 +62,45 @@ block content
                     .modal-footer
                         button.btn.btn-default(type='button', data-dismiss='modal' id="closebtn") Close
                         button.btn.btn-primary(type='button' id="modal_save") Save
+
+
+
+        .panel.panel-default.req-detail(class="<% reqCss%>")
+            .panel-heading
+                ul.nav.nav-tabs(role='tablist')
+                    li.active(role='presentation')
+                        a(href='#') Header
+                    li(role='presentation')
+                        a(href='#') Response
+                    li(role='presentation')
+                        a(href='#') Messages
+                a.panel-close(ng-click="closeRequest()") X
+            .panel-body
+                dl.dl-horizontal
+                    dt Request URL:
+                    dd <% requestItem.uri %>
+                    dt Request Method:
+                    dd <% requestItem.method %>
+                div.clearfloat
+                div
+                    span.caret
+                    strong Response Headers
+                    <reqtemp></reqtemp>
+                    //dl.dl-horizontal
+                    //    dt Content-Type:
+                    //    dd <%requestItem.reqHeaders.accept%>
+                    //    dt Accept-Encoding:
+                    //    dd <%requestItem.reqHeaders['accept-encoding']%>
+                    //    dt User-Agent:
+                    //    dd <%requestItem.reqHeaders['user-agent']%>
+                    //    dt Accept-Language:
+                    //    dd <%requestItem.reqHeaders['accept-language']%>
+                    //    dt Cookie:
+                    //    dd <%requestItem.reqHeaders['cookie']%>
+                .clearfloat
+                div
+                    span.caret
+                    strong Response Headers
+                    <htemp my-id="2"></htemp>
 
 

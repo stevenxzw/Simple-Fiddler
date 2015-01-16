@@ -1,5 +1,6 @@
 body {
-  font: 12px "Lucida Grande", Helvetica, Arial, sans-serif; }
+  font: 12px "Lucida Grande", Helvetica, Arial, sans-serif;
+  padding-top: 50px; }
 
 a {
   color: #00B7FF; }
@@ -16,8 +17,8 @@ a {
  * Base structure
  */
 /* Move down content because we have a fixed navbar that is 50px tall */
-body {
-  padding-top: 50px; }
+.clearfloat {
+  clear: both; }
 
 /*
  * Global add-ons
@@ -111,3 +112,36 @@ body {
 
 .form-horizontal {
   max-width: 550px; }
+
+#table_list a {
+  margin-left: 5px; }
+
+.req-detail {
+  position: absolute;
+  z-index: 10002;
+  width: 58.5%;
+  right: 0;
+  top: 0;
+  transition: 400ms;
+  -webkit-transform: translate(0px, -50px) translateZ(0px);
+  border-radius: 0 0 4px 4px; }
+  .req-detail .panel-heading {
+    height: 49px; }
+  .req-detail .panel-close {
+    margin-top: 5px;
+    cursor: pointer;
+    float: right; }
+  .req-detail .nav {
+    float: left; }
+  .req-detail .caret {
+    margin-right: 5px; }
+  .req-detail strong {
+    font-size: 14px; }
+  .req-detail .list-unstyled {
+    margin-left: 20px; }
+
+.req-detail-show {
+  -webkit-transform: translate(0px, 0px) translateZ(0px); }
+
+.req-detail-hide {
+  -webkit-transform: translate(0px, -800px) translateZ(0px); }

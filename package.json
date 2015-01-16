@@ -4,7 +4,7 @@
   "private": true,
   "scripts": {
     "start": "node ./bin/www",
-    "gulp-init" : "npm link gulp gulp-util gulp-concat gulp-watch gulp-connect gulp-livereload gulp-sass"
+    "gulp-init" : "npm link gulp gulp-util gulp-concat gulp-watch gulp-connect gulp-livereload gulp-sass express-livereload"
   },
   "dependencies": {
     "express": "~4.9.0",

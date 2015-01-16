@@ -1,5 +1,5 @@
 body {
-    font: 12px "Lucida Grande", Helvetica, Arial, sans-serif;
+    font: 12px "Lucida Grande", Helvetica, Arial, sans-serif;padding-top: 50px;
 }
 
 a {
@@ -23,8 +23,8 @@ a {
 
 /* Move down content because we have a fixed navbar that is 50px tall */
 
-body {
-    padding-top: 50px;
+.clearfloat {
+    clear: both;
 }
 
 /*
@@ -148,4 +148,51 @@ body {
 
 .form-horizontal{
   max-width : 550px;
+}
+
+#table_list{
+  a{
+    margin-left: 5px;
+  }
+}
+
+.req-detail{
+  position: absolute;
+  z-index: 10002;
+  width : 58.5%;
+  right: 0;
+  top : 0;
+  transition: 400ms;
+  -webkit-transform: translate(0px, -50px) translateZ(0px);
+  border-radius : 0 0 4px 4px;
+  .panel-heading{
+    height: 49px;
+  }
+  .panel-close{
+    margin-top : 5px;
+    cursor: pointer;
+    float : right;
+  }
+  .nav {
+    float : left;
+  }
+  .caret{
+    margin-right: 5px;
+  }
+
+  strong {
+    font-size : 14px;
+  }
+
+  .list-unstyled{
+    margin-left: 20px;
+  }
+}
+.req-detail-show{
+  -webkit-transform: translate(0px, 0px) translateZ(0px);
+}
+.req-detail-hide{
+
+  -webkit-transform: translate(0px, -800px) translateZ(0px);
+
 }

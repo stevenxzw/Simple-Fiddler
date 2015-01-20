@@ -3,7 +3,7 @@ html(ng-app="app")
     head
         include header
         append header
-    body
+    body(ng-controller="MainCtrl" ng-click='clickBody($event)')
         nav.navbar.navbar-inverse.navbar-fixed-top(role='navigation')
             .container-fluid
                 .navbar-header
@@ -16,11 +16,26 @@ html(ng-app="app")
                 #navbar.navbar-collapse.collapse
                     ul.nav.navbar-nav.navbar-right
                         li
-                            a(href='#') Dashboard
+                            a#drop4.dropdown-toggle(href='#', ng-click="filterType($event)" class="<% showSelect %>")
+                                | Filter(<% filter_type %>)
+                                span.caret
+                            ul#menu1.dropdown-menu(role='menu' class="<% show_option %>" ngd-click="selectedFilter($event)"  selector="a")
+                                li
+                                    a(role='menuitem', tabindex='-1', href='#') All
+                                li
+                                    a(href='#') Script
+                                li
+                                    a(href='#') Css
+                                li
+                                    a(href='#') Image
+                                li
+                                    a( href='#') XHR
+                                li
+                                    a(href='#') Document
+                                li
+                                    a( href='#') Other
                         li
-                            a(href='#') Help
-                    form.navbar-form.navbar-right
-                        input.form-control(type='text', placeholder='Search...')
+                                    a(href='#') Help
 
 
         block content

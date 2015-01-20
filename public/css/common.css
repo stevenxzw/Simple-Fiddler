@@ -73,6 +73,17 @@ a {
       color: #fff;
       background-color: #428bca; }
 
+.dropdown-menu-ing {
+  border-top: 0;
+  display: block; }
+
+.navbar-right .dropdown-menu {
+  left: -1px; }
+
+.dropdown-ed {
+  background-color: #ffffff;
+  display: block; }
+
 /*
  * Main content
  */
@@ -107,6 +118,9 @@ a {
 .sidebar-head button {
   float: right; }
 
+.dl-horizontal dt {
+  text-align: left; }
+
 .table-responsive {
   clear: both; }
 
@@ -130,7 +144,8 @@ a {
   .req-detail .panel-close {
     margin-top: 5px;
     cursor: pointer;
-    float: right; }
+    float: right;
+    margin-right: 2%; }
   .req-detail .nav {
     float: left; }
   .req-detail .caret {
@@ -145,3 +160,17 @@ a {
 
 .req-detail-hide {
   -webkit-transform: translate(0px, -800px) translateZ(0px); }
+
+.caretclop {
+  display: inline-block;
+  width: 0;
+  height: 0;
+  margin-left: 2px;
+  vertical-align: middle;
+  border-bottom: 4px solid;
+  border-right: 4px solid transparent;
+  border-left: 4px solid transparent;
+  cursor: pointer; }
+
+.caret {
+  cursor: pointer; }

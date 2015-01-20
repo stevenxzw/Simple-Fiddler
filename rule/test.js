@@ -1,36 +1,15 @@
 exports.rule=[
     {
-        "id": 1,
-        "targetUrl": "gaofen.js",
-        "replaceWith": "http://dev.myweb.com/gaofen.js",
-        "compareType": "regExp",
-        "isChecked": true
-    },
-    {
         "id": 2,
         "targetUrl": "http://www.baidu.com/",
-        "replaceWith": "http://dev.myweb.com/remote.js",
+        "replaceWith": "http://dev.myweb.com/jquery.js",
         "compareType": "compare",
-        "isChecked": true
+        "isChecked": false
     },
     {
-        "id": 4,
-        "replaceWith": "2",
-        "targetUrl": "1",
-        "compareType": "compare",
-        "isChecked": true
-    },
-    {
-        "id": 5,
-        "replaceWith": "22",
-        "targetUrl": "11",
-        "compareType": "compare",
-        "isChecked": true
-    },
-    {
-        "id": 6,
-        "replaceWith": "445",
-        "targetUrl": "44",
+        "id": 7,
+        "replaceWith": "http://dev.myweb.com/invite.js",
+        "targetUrl": "http://su.bdimg.com/static/superplus/js/lib/jquery-1.10.2_d88366fd.js",
         "compareType": "compare",
         "isChecked": true
     }

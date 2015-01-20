@@ -2,7 +2,7 @@ extends layout
 
 block content
 
-    div.container-fluid(ng-controller="MainCtrl")
+    div.container-fluid
         div.row
             div.col-sm-3.col-md-5.sidebar
                 div.sidebar-head
@@ -15,22 +15,22 @@ block content
                                 td
                                     span <% $index+1%>
                                     input(type='checkbox' ng-checked="rule.isChecked=== true" style='margin-left:5px;')
-                                td <% rule.targetUrl|limitTo:30%>
-                                td <% rule.replaceWith|limitTo:30%>
+                                td <% rule.targetUrl|cutStr:20%>
+                                td <% rule.replaceWith|cutStr:30%>
                                 td
                                     a(href="").edit 修改
-                                    a(href="").del 删除
+                                    a(href="").del x
             div.col-sm-9.col-sm-offset-3.col-md-7.col-md-offset-5.main
                 h5.sub-header 请求列表
                 div(ngd-click="addRuleBtn($event,this)"  selector="button,div").table-responsive
                     table.table.table-striped
                         tbody
-                            tr(ng-repeat="item in uris", rel="<% item.sid%>")
+                            tr(ng-repeat="item in showDataList", rel="<% item.sid%>")
                                 td <% $index+1%>
                                 td
                                     img(src="<% item.contentType | icon%>")
                                 td
-                                    div(title="<% item.uri%>")<% item.uri|limitTo:40%>
+                                    div(title="<% item.uri%>")<% item.uri|cutStr:60%>
                                 td
                                     button 添加
 
@@ -68,14 +68,10 @@ block content
         .panel.panel-default.req-detail(class="<% reqCss%>")
             .panel-heading
                 ul.nav.nav-tabs(role='tablist')
-                    li.active(role='presentation')
-                        a(href='#') Header
-                    li(role='presentation')
-                        a(href='#') Response
-                    li(role='presentation')
-                        a(href='#') Messages
+                    li(role='presentation' ng-repeat="tab in tabs" ng-class="whatClassIsIt(tab.name)" ng-click="changeTab(tab)")
+                        a(href='#') <% tab.name%>
                 a.panel-close(ng-click="closeRequest()") X
-            .panel-body
+            .panel-body(ng-class="whatClassContent('Header')")
                 dl.dl-horizontal
                     dt Request URL:
                     dd <% requestItem.uri %>
@@ -83,24 +79,14 @@ block content
                     dd <% requestItem.method %>
                 div.clearfloat
                 div
-                    span.caret
-                    strong Response Headers
+                    span(ng-click="setClop('reqclop')", ng-class="caret('reqclop')")
+                    strong Request Headers
                     <reqtemp></reqtemp>
-                    //dl.dl-horizontal
-                    //    dt Content-Type:
-                    //    dd <%requestItem.reqHeaders.accept%>
-                    //    dt Accept-Encoding:
-                    //    dd <%requestItem.reqHeaders['accept-encoding']%>
-                    //    dt User-Agent:
-                    //    dd <%requestItem.reqHeaders['user-agent']%>
-                    //    dt Accept-Language:
-                    //    dd <%requestItem.reqHeaders['accept-language']%>
-                    //    dt Cookie:
-                    //    dd <%requestItem.reqHeaders['cookie']%>
                 .clearfloat
                 div
-                    span.caret
+                    span(ng-click="setClop('resclop')", ng-class="caret('resclop')")
                     strong Response Headers
                     <htemp my-id="2"></htemp>
-
+            .panel-body(ng-class="whatClassContent('Response')")
+                div <% reqContent %>
 

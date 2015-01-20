@@ -10,7 +10,7 @@
             socket = io.connect();
             //修复页面后刷新页面
             socket.on('reloadPage', function(file){
-                console.log(file);
+                //console.log(file);
                 location.reload();
             });
         }
@@ -26,7 +26,7 @@
 
     M.on('changeRule', function(p){
         socket.emit('client-rule-change', p);
-        console.log(p);
+        //console.log(p);
     });
 
 
@@ -63,9 +63,46 @@
                         break;
                 }
             }
+        }).filter('cutStr', function(){
+            return function(v, len){
+
+                if(v === '') return v;
+                var strLen = v.length;
+                len = len || 30;
+                if(strLen <= len) return v;
+                var other = '';
+                //if(v.indexOf('dj2.baidu.com') > -1) debugger;
+                if(v.indexOf('?') > -1){
+                    v = v.split('?')[0];
+                    other = '...';
+                }
+                var spstr =/\.[^\.^\/]+$/.exec(v);
+
+                if(spstr){
+                    var end = spstr[0];
+                    v = v.replace(end, '');
+                    if(v.length > len){
+                        if(end.length > 10){
+                            return v.substring(0, len)+'...';
+                        }
+                        return v.substring(0, len)+'...'+end;
+                    }else{
+                        if(end.length > 10) return v+'...';
+                        return v+end+other;
+                    }
+                }else{
+                    return v.substring(0, len)+'...';
+                }
+                return v;
+
+            }
         });
 
-    app.controller('MainCtrl', function($scope) {
+    app.controller('MainCtrl', function($scope, $filter) {
+
+        $scope.clickBody = function(){
+            $scope.$emit('body-event-click');
+        }
 
         app.filter('hasUri', function(){
             return function(v){
@@ -77,21 +114,25 @@
                 }
                 return '添加';
             }
-        })
+        }).filter('isCurrent', function(){
+                return function(v){
+                    return v === $scope.currentTab;
+                }
+            })
         socketInit();
         //console.log(socket.io.on);
         var uris = $scope.uris = [], rules = [], add_modal = angular.element(document.querySelector('#addModal'));
         rules = JSON.parse(M.config.content).rules;
         $scope.rules = rules;
-            socket.on('link-ok', function(){
-            console.log('link-ok');
-        })
-        socket.emit('test-links');
+//        socket.on('link-ok', function(){
+//            console.log('link-ok');
+//        })
+//        socket.emit('test-links');
 
         socket.on('request-url', function(p){
-            console.log(p);
             $scope.$apply(function(){
                 uris.push(p);
+                watchReqUri([p]);
                 //console.log('---:'+ p.url);
             });
         })
@@ -100,16 +141,16 @@
                 if(uris[i].idx === p.idx){
                     uris[i].result = p.result;
                     uris[i].resHeaders = p.resHeaders;
-                    if(p.result != ''){
-                    console.log('out---result:');
-                    console.log(uris[i]);
-                    }
+//                    if(p.result != ''){
+//                    console.log('out---result:');
+//                    console.log(uris[i]);
+//                    }
                     break;
                 }
             }
         })
 
-        console.log(+new Date);
+        //console.log(+new Date);
 //        setInterval(function(){
 //            console.log('-------emit:test');
 //            socket.emit('test-test', function(){
@@ -171,8 +212,34 @@
             }
         };
 
+        $scope.isShow = false;
+
         //添加rule数据
         $scope.modalData = initModalData();
+
+        $scope.tabs = [{
+            name : 'Header',
+            active : true
+        },{
+            name : 'Response',
+            active : false
+        }];
+        $scope.currentTab = 'Header';
+
+
+
+        $scope.whatClassIsIt = function(n){
+            return n === $scope.currentTab ? 'active': '';
+        }
+
+        $scope.whatClassContent = function(name){
+            if(name === $scope.currentTab) return '';
+            return 'hidden';
+        }
+
+        $scope.changeTab = function(tab){
+            $scope.currentTab = tab.name;
+        }
 
         //点击请求数据
         $scope.requestItem = {
@@ -188,24 +255,101 @@
             name: 'yi'
         };
 
-        $scope.reqHeaders = {
-            ss : 1
-        };
-        $scope.reqHeaders = {
-            test : 3
-        };
+        $scope.reqContent = '';
 
+        $scope.reqHeaders = {
+
+            test1: 'dd',
+            test2 : 'mm'
+        };
         $scope.$on('add_modal_close', function(){
             add_modal.css('display','none').removeClass('in');
-            //angular.forEach(add_modal.find('input'), function(dom, v){
-            //    dom.value = '';
-            //})
-
             $scope.$apply(function(){
                 $scope.modalData = initModalData();
-                //console.log($scope.modalData.targetUrl);
             });
         });
+
+        $scope.showDataList = [];
+
+        function watchReqUri(o){
+            if(!o){
+                $scope.showDataList = [];
+            }
+            ang.forEach(o || uris, function(item,k){
+                if($scope.filter_type === 'All'){
+                    $scope.showDataList.push(item);
+                }else{
+                    var type = item.contentType, changeType;
+                    switch(type){
+                        case 'text/css' :
+                            changeType = 'Css';
+                            break;
+                        case 'image/webp' :
+                            changeType = 'Image';
+                            break;
+                        case 'application/javascript':
+                            changeType = 'Script';
+                            break;
+                        case 'application/octet-stream':
+                            changeType = 'Document';
+                            break;
+                        case '*/*':
+                            changeType = 'Script';
+                            break;
+                        default :
+                            changeType = 'Other';
+                    }
+                    if($scope.filter_type === changeType){
+                        $scope.showDataList.push(item);
+                    }
+                }
+
+            })
+        }
+//        $scope.$watch('filter_type', function(e){
+//            //console.log('test--------')
+//            //watchReqUri();
+//        })
+        $scope.filter_type = 'All';
+        $scope.showSelect = '';
+        $scope.filterType = function(e){
+            //console.log(e)
+            e.stopPropagation();
+            //$scope.$apply(function(){
+                $scope.showSelect = 'dropdown-ed';
+                $scope.show_option = 'dropdown-menu-ing';
+            //})
+        }
+        $scope.show_option = '';
+
+        $scope.selectedFilter = function(e){
+            var target = e.target;
+            $scope.filter_type = target.innerHTML;
+            $scope.showSelect = '';
+            $scope.show_option = '';
+            watchReqUri();
+        }
+
+        $scope.$on('body-event-click', function(){
+            //$scope.filter_type = target.innerHTML;
+            $scope.showSelect = '';
+            $scope.show_option = '';
+        })
+
+        $scope.reqclop = '';
+
+        $scope.resclop = '';
+
+        //$scope.isShow = true;
+
+        $scope.setClop = function(v){
+            $scope[v] = $scope[v] ? '' : 'hidden';
+        }
+
+        $scope.caret = function(v){
+            return $scope[v] === '' ? 'caretclop' : 'caret';
+        }
+
 
         var btn = angular.element(document.querySelector('#closebtn')),
             closeBtn = angular.element(document.querySelector('#closebtn2'));
@@ -251,11 +395,7 @@
                     }else if(angObj.hasClass('edit')){
                         for(var i= 0,len = rules.length;i<len;i++){
                             if(id == rules[i].id){
-                                 $scope.$emit('add_modal_open', rules[i]);
-                                //console.log(rules[i]);
-//                                $scope.$emit('add_modal_open', {
-//                                    targetUrl : uriObj.uri
-//                                });
+                                $scope.$emit('add_modal_open', rules[i]);
                                 break;
                             }
                         }
@@ -285,44 +425,23 @@
                 break;
                 case 'DIV' :
                     if(uriObj){
-                        //$scope.$apply(function(){
-                            $scope.requestItem = uriObj;
-                            $scope.resHeaders = uriObj.resHeaders;
-                            $scope.reqHeaders = uriObj.reqHeaders;
-                        console.log()
-                            //console.log($scope.requestItem)
-                            $scope.isShow = true;
-                        //})
+                        $scope.requestItem = uriObj;
+                        $scope.resHeaders = uriObj.resHeaders;
+                        $scope.reqHeaders = uriObj.reqHeaders;
+                        $scope.reqContent = uriObj.result;
+                        $scope.isShow = true;
                     }
-                    //console.log('click-this')
-                    //console.log(uriObj)
                 break;
             }
         }
+
         $scope.reqCss = 'req-detail-hide';
         $scope.$watch('isShow', function(newValue){
 
             $scope.reqCss = newValue ? 'req-detail-show':'req-detail-hide';
-            //
-            //$scope.$apply(function(){
-            //$scope.reqCss = 'req-detail-show';
-            //})
-            //console.log($scope.reqCss)
+
         });
 
-//        $scope.$watch('requestItem', function(){
-//            console.log('requestItem-change');
-//            console.log($scope.requestItem)
-//            //$scope.$apply();
-//        })
-        $scope.isShow = false;
-//        setTimeout(function(){
-//
-//            $scope.$apply(function(){
-//                $scope.isShow = true;
-//            });
-//        }, 500);
-//        console.log($scope.isShow);
         $scope.closeRequest = function(){
             $scope.isShow = false;
         }
@@ -333,25 +452,8 @@
         return {
             restrict: 'E',
             //template: '<dt ng-repeat="item in requestItem.resHeaders"><% item%></dt><dd>--</dd>',
-            template: '<ul class="list-unstyled"><li ng-repeat="(item, key) in _resHeaders"><strong><% item%></strong>:<% key%></li></ul>',
+            template: '<ul class="list-unstyled <% resclop %>"><li ng-repeat="(item, key) in resHeaders"><strong><% item%></strong>:<% key%></li></ul>',
                 link: function(scope, elem, attrs) {
-                    console.log(attrs.myId)
-
-
-                    scope.$watch('resHeaders', function(){
-                        console.log('res---')
-                        console.log(arguments);
-                    })
-                    scope.$watch('reqHeaders', function(){
-                        console.log('req-----')
-                        console.log(arguments);
-                    })
-
-                    scope._resHeaders = {
-                        my : 1,
-
-                        you : 2
-                    };
                 },
             replace: true
         };
@@ -359,7 +461,7 @@
             return {
                 restrict: 'E',
                 //template: '<dt ng-repeat="item in requestItem.resHeaders"><% item%></dt><dd>--</dd>',
-                template: '<ul class="list-unstyled"><li ng-repeat="(item, key) in reqHeaders"><strong><% item%></strong>:<% key%></li></ul>',
+                template: '<ul class="list-unstyled <% reqclop %>"><li ng-repeat="(item, key) in reqHeaders"><strong><% item%></strong>:<% key%></li></ul>',
                 link: function(scope, elem, attrs) {
 
                 },

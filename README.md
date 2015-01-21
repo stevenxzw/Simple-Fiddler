@@ -1,4 +1,4 @@
-# Simple-proxy
+# Simple-Fiddler
 
 fiddler for browser power by nodejs
 

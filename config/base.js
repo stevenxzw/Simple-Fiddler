@@ -7,7 +7,7 @@ var config = {
     *  项目基本信息
     *
     * */
-    project : 'Simple-proxy',
+    project : 'Simple-Fiddler',
     version : 1.0,
 
 
